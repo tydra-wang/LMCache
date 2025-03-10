@@ -107,6 +107,9 @@ class LMCacheEngine:
         :raises: ValueError if the number of Falses in the mask is not a 
             multiple of the chunk size.
         """
+
+        logger.debug("engine.store...")
+
         if mask is not None:
             monitor_req_id = self.stats_monitor.on_store_request(
                 torch.sum(mask))
@@ -311,6 +314,7 @@ class LMCacheEngineBuilder:
     def get(cls, instance_id: str) -> Optional[LMCacheEngine]:
         """Returns the LMCacheEngine instance associated with the instance ID, 
         or None if not found."""
+        logger.debug("get engine ...")
         return cls._instances.get(instance_id)
 
     @classmethod

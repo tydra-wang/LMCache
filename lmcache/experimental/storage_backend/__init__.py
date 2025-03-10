@@ -27,6 +27,8 @@ def CreateStorageBackends(
     lookup_server: Optional[LookupServerInterface] = None,
 ) -> OrderedDict[str, StorageBackendInterface]:
 
+    logger.debug(f"config: {config}")
+
     # Replace 'cuda' with 'cuda:<device id>'
     if dst_device == "cuda":
         dst_device = f"cuda:{torch.cuda.current_device()}"
@@ -36,6 +38,7 @@ def CreateStorageBackends(
 
     # TODO(Jiayi): The hierarchy is fixed for now
     if config.local_disk and config.max_local_disk_size > 0:
+        logger.debug("adding local_disk_backend ...")
         local_disk_backend = LocalDiskBackend(config, loop, memory_allocator,
                                               dst_device, lookup_server)
         backend_name = str(local_disk_backend)

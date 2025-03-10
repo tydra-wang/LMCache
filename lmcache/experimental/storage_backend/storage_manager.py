@@ -139,6 +139,7 @@ class StorageManager:
 
         #ever_put = False
         for backend_name, backend in self.storage_backends.items():
+            logger.debug(f"backend.submit_put_task in {backend_name} ...")
             put_task = backend.submit_put_task(key, memory_obj)
 
             if put_task is None:

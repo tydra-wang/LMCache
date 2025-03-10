@@ -97,6 +97,8 @@ class LocalDiskBackend(StorageBackendInterface):
         key: CacheEngineKey,
         memory_obj: MemoryObj,
     ) -> Optional[Future]:
+        logger.debug("LocalDiskBackend.submit_put_task ...")
+
         assert memory_obj.tensor is not None
 
         # Update cache recency
@@ -183,6 +185,7 @@ class LocalDiskBackend(StorageBackendInterface):
         assert kv_chunk is not None
         byte_array = memory_obj.byte_array
         path = self._key_to_path(key)
+        logger.debug(f"writing into file {path}")
 
         async with aiofiles.open(path, 'wb') as f:
             await f.write(byte_array)
