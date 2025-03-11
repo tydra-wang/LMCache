@@ -9,6 +9,7 @@ from lmcache.storage_backend.connector.base_connector import (
 from lmcache.storage_backend.connector.lm_connector import LMCServerConnector
 from lmcache.storage_backend.connector.redis_connector import (
     RedisConnector, RedisSentinelConnector)
+from lmcache.storage_backend.connector.filesystem_connector import FilesystemConnector
 
 logger = init_logger(__name__)
 
@@ -92,6 +93,9 @@ def CreateConnector(url: str, device=None) -> RemoteConnector:
                 raise ValueError(
                     f"LM connector only supports a single host, but got url:"
                     f" {url}")
+
+        case "file":
+            connector = FilesystemConnector(parsed_url.hosts[0])
 
         case _:
             raise ValueError(
