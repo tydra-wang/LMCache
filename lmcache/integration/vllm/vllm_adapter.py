@@ -713,6 +713,7 @@ def lmcache_retrieve_kv(
                 slot_mapping_req_full = slot_mapping[start_pos:end_pos]
 
             # call lmcache retrieve
+            logger.debug("engine.retrieve() ...")
             ret_token_mask = engine.retrieve(
                 full_token_tensor,
                 token_mask,

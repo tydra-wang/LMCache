@@ -180,6 +180,7 @@ class LMCacheEngine:
                 tokens, mask):
 
             # Get the memory object from the storage backend
+            logger.debug("storage_manager.get() ...")
             memory_obj = self.storage_manager.get(key)
 
             if memory_obj is None:
