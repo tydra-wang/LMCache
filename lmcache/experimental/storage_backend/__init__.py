@@ -13,6 +13,7 @@ from lmcache.experimental.storage_backend.abstract_backend import \
 from lmcache.experimental.storage_backend.local_disk_backend import \
     LocalDiskBackend
 from lmcache.experimental.storage_backend.remote_backend import RemoteBackend
+from lmcache.experimental.storage_backend.shared_file_backend import SharedFileBackend
 from lmcache.logging import init_logger
 
 logger = init_logger(__name__)
@@ -47,6 +48,12 @@ def CreateStorageBackends(
                                        lookup_server)
         backend_name = str(remote_backend)
         storage_backends[backend_name] = remote_backend
+
+    if config.shared_file is not None:
+        shared_file_backend = SharedFileBackend(config, loop, memory_allocator,
+                                                dst_device, lookup_server)
+        backend_name = str(shared_file_backend)
+        storage_backends[backend_name] = shared_file_backend
 
     # TODO(Jiayi): Please support other backends
     config.enable_blending = False
