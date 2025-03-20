@@ -21,6 +21,9 @@ class LMCacheEngineConfig:
     remote_url: Optional[str]
     remote_serde: Optional[str]  # Can be "naive" or "cachegen"
 
+    shared_file: Optional[str]
+    shared_file_wserver: Optional[str]
+
     save_decode_cache: bool  # whether to store decode kv cache
 
     # Blending related configurations
@@ -136,6 +139,9 @@ class LMCacheEngineConfig:
         remote_url = config.get("remote_url", None)
         remote_serde = config.get("remote_serde", "naive")
 
+        shared_file = config.get("shared_file", None)
+        shared_file_wserver = config.get("shared_file_wserver", None)
+
         save_decode_cache = config.get("save_decode_cache", False)
         enable_blending = config.get("enable_blending", False)
         blend_recompute_ratio = config.get("blend_recompute_ratio", 0.15)
@@ -163,6 +169,14 @@ class LMCacheEngineConfig:
             case _:
                 raise ValueError(f"Invalid remote storage url: {remote_url}")
 
+        match shared_file_wserver:
+            case None:
+                pass
+            case url if re.match(r"(.*)://(.*):(\d+)", url):
+                pass
+            case _:
+                raise ValueError(f"Invalid shared file wserver url: {remote_url}")
+
         return LMCacheEngineConfig(
             chunk_size,
             local_cpu,
@@ -171,6 +185,8 @@ class LMCacheEngineConfig:
             max_local_disk_size,
             remote_url,
             remote_serde,
+            shared_file,
+            shared_file_wserver,
             save_decode_cache,
             enable_blending,
             blend_recompute_ratio,
